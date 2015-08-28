@@ -9,7 +9,7 @@ It also implements a light PHP-based URL shortener using a MySQL server.
 Want To Use It
 =============
 
-If you like it, feel free to clone the repo and/or upload the files to your webserver. Change values in var.php to match your environment, create a database in your MySQL server (see my own values in the var.php file).
+If you like it, feel free to clone the repo and/or upload the files to your webserver. Change values in var.php to match your environment, create a database in your MySQL server (see my own values in the var.php file). Be sure that the .htaccess is considered by your web server (include some rewrite rules that are required for the shortener)
 
 
 To-Do
