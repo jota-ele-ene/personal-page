@@ -1,8 +1,11 @@
 <?php
 //include configuration file 
-if(file_exists('var.php'))
-    include_once("var.php");
+if(file_exists('custom.php'))
+    include_once("custom.php");
 else {
+	if(file_exists('var.php'))
+    	include_once("var.php");
+	else
 		echo "The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment";
 		exit; 
 }
