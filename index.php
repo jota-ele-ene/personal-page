@@ -5,9 +5,10 @@ if(file_exists('custom.php'))
 else {
 	if(file_exists('var.php'))
     	include_once("var.php");
-	else
+	else {
 		echo "The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment";
-		exit; 
+		exit;
+	}
 }
 //include tracking code. Use the file ga.php to include the code to embed for tracking purpose
 if(file_exists('ga.php'))
@@ -233,11 +234,13 @@ function getNewBackground()
 	
 		<div id="hello"><?php echo $text;?></div>
 		
+		<?php if (!empty($muzak)) { ?>
 		<div id="muzak">
 			<audio autoplay loop>
-  	    <source src="xmas.mp3">
+  	    <source src="<?php echo $muzak;?>">
 			</audio>	
 		</div>
+		<?php } ?>
 		
 		<div id="shortener" style="position: absolute; z-index: 100; height: 10px; display: none;top: 200px;left: 50%;margin-left: -150px;">
 			<div id="shortenerResult"></div>

@@ -27,6 +27,6 @@ $profiles = array
   array("GitHub page","https://github.com/jota-ele-ene",'<i class="fa fa-github fa-2" style="font-size: x-large;margin-top: 0.4em;"></i>'),
   );
 
-$music = '';
+$muzak = 'hola';
 
 ?>
