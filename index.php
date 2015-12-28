@@ -222,12 +222,22 @@ function getNewBackground()
 			<script type="text/javascript" src="js/jquery.tablesorter.widgets.min.js"></script>
 			<script type="text/javascript" src="js/jquery.tablesorter.widgets-filter-formatter.js"></script>
 		<?php } ?>
-
+		<script type="text/javascript">
+		  window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var n=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(n?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o);for(var r=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=r(p[c])};
+		  heap.load("275512564");
+		</script>
+	
 	</head> 
  
     <body class="target" onLoad="reloadBackground()">  
 	
 		<div id="hello"><?php echo $text;?></div>
+		
+		<div id="muzak">
+			<audio autoplay loop>
+  	    <source src="xmas.mp3">
+			</audio>	
+		</div>
 		
 		<div id="shortener" style="position: absolute; z-index: 100; height: 10px; display: none;top: 200px;left: 50%;margin-left: -150px;">
 			<div id="shortenerResult"></div>
