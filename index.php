@@ -326,7 +326,8 @@ function getNewBackground()
 		<!--if form was just posted-->
 		<?php if (!empty($_GET['s'])) { ?>
 		<script>
-			    $("div#shortenerResult").html('<h2>The short URL: <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/<?php echo $_GET['s']; ?>" target="_blank"><?php echo "http://jln.bz/"; ?><?php echo $_GET['s']; ?></a></h2>').show();
+		alert("");
+			    $("div#shortenerResult").html('<h2>The short URL: <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?><?php echo substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1);?><?php echo $_GET['s']; ?>" target="_blank"><?php echo "http://jln.bz/"; ?><?php echo $_GET['s']; ?></a></h2>').show();
 				$("div#shortener").show();				
 				$("div#hello").hide();				
 		</script>
