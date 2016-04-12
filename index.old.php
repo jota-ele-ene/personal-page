@@ -21,6 +21,65 @@ date_default_timezone_set($timezone);
 header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
+
+if (!empty($_GET['url'])) { 
+    //	REtrieving target URL from url param containing shorten URL
+	$result = mysql_query("SELECT url_link, url_hits FROM urls WHERE url_short = '".addslashes($_GET['url'])."'");
+ 
+	if (!$result) {
+		echo "Could not successfully run the shortener (" . mysql_error().")";
+		exit; 
+	} 
+
+	if (mysql_num_rows($result) == 0) {
+        //	No shorten URL found. Redirecting to home
+		header('HTTP/1.1 301 Moved Permanently');  
+		header("Location: ".$_SERVER['HTTP_HOST']);  
+		exit;
+	} 
+	while ($row = mysql_fetch_assoc($result)) {
+		//Shorten URL found - Forwarding
+		$redirect = $row["url_link"];
+		$hits = $row["url_hits"]+1; 
+	}
+	echo $hits.','.$redirect;
+	mysql_query("UPDATE urls SET url_hits=".$hits." WHERE url_short = '".addslashes($_GET['url'])."'");
+	header('HTTP/1.1 301 Moved Permanently');  
+	header("Location: ".$redirect);  
+
+}
+//
+
+//insert new url
+if ($_POST['url']) {
+
+//get random string for URL
+$short = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5);
+
+mysql_query("INSERT INTO urls (url_link, url_short, url_ip, url_date) VALUES
+
+	(
+	'".addslashes($_POST['url'])."',
+	'".$short."',
+	'".$_SERVER['REMOTE_ADDR']."',
+	'".time()."'
+	)
+
+");
+
+$redirect = "?s=$short";
+header('Location: '.$redirect); die;
+
+}
+//
+
+
+function getNewBackground()
+{
+	 return "https://unsplash.it/1280/720?random";
+}
+
+
 ?> 
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -49,10 +108,23 @@ header('Expires: 0'); // Proxies.
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
 		<script src="js/bubbles.js" type="text/javascript"></script>
 		
+		
+		<?php if (!empty($_GET['stats'])) { ?>
+			<link rel="stylesheet" href="css/tablesorter.blue.css">
+			<link rel="stylesheet" href="css/jquery-ui.min.css">
+			<!-- filter formatter code -->
+			<link rel="stylesheet" href="css/filter.formatter.css">
+			<!-- jQuery UI for range slider -->
+			<script src="js/jquery-ui-latest.min.js"></script>
+			<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+			<script type="text/javascript" src="js/jquery.tablesorter.widgets.min.js"></script>
+			<script type="text/javascript" src="js/jquery.tablesorter.widgets-filter-formatter.js"></script>
+		<?php } ?>
 		<script type="text/javascript">
 		  window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var n=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(n?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o);for(var r=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=r(p[c])};
 		  heap.load("275512564");
 		</script>
+	
 	</head> 
  
     <body class="target" onLoad="reloadBackground()">  
@@ -65,6 +137,34 @@ header('Expires: 0'); // Proxies.
   	    <source src="<?php echo $muzak;?>">
 			</audio>	
 		</div>
+		<?php } ?>
+		
+		<div id="shortener" style="position: absolute; z-index: 100; height: 10px; display: none;top: 200px;left: 50%;margin-left: -150px;">
+			<div id="shortenerResult"></div>
+			<form id="form1" name="form1" method="post" action="">
+				<input name="url" type="url" id="url" placeholder="Tell me the URL to short" size="75" required />
+				<input type="submit" name="Submit" value="Short" />
+			</form>
+		</div>
+ 
+		<?php if (!empty($_GET['stats'])) { ?>
+			<div id="stats" style="position: absolute; z-index: 100; top: 200px;left: 50%;margin-left: -520px;"> 
+				<table id="stats" class="tablesorter-blue">
+				  <thead><strong><tr><th width="640px">URL</th><th width="60px">SHORT</th><th width="25px">HITS</th><th width="220px">DATE</th></tr></strong></thead>
+				  <tbody>
+				  <?php 
+					$result = mysql_query("SELECT url_link, url_short, url_hits, url_date FROM urls ORDER BY url_date DESC");
+					while ($row = mysql_fetch_assoc($result)) { ?> 
+						<tr>
+						  <td width="640px"><a target="_blank" href="<?php echo $row["url_link"];?>"><?php echo $row["url_link"];?></a></td>
+						  <td width="60px"><?php echo $row["url_short"];?></td>
+						  <td width="25px"><?php echo $row["url_hits"];?></td>
+						  <td width="220px"><?php echo date("D, d M Y - H:i:s",$row["url_date"]);?></td>
+						</tr>
+					<?php }?>
+				  </tbody>
+				</table>
+			</div>
 		<?php } ?>
 
 		<div id="canvasBubbles" style="position:relative; height:100%; width:100%"></div>
@@ -120,6 +220,17 @@ header('Expires: 0'); // Proxies.
 
 		</script> 
 
+		<!--if form was just posted-->
+		<?php if (!empty($_GET['s'])) { ?>
+		<script>
+		alert("");
+			    $("div#shortenerResult").html('<h2>The short URL: <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?><?php echo substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1);?><?php echo $_GET['s']; ?>" target="_blank"><?php echo "http://jln.bz/"; ?><?php echo $_GET['s']; ?></a></h2>').show();
+				$("div#shortener").show();				
+				$("div#hello").hide();				
+		</script>
+		<?php } ?>
+		<!---->
+		
 	</body>
 
 </html>

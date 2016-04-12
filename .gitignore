@@ -1,6 +1,6 @@
-ga.php
-images/
 .well-known/
+images/
 pub
-custom.php
+setup/custom.php
+setup/ga.php
 xmas.mp3
