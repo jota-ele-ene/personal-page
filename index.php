@@ -18,7 +18,7 @@ include('setup/db.php');
 
 date_default_timezone_set($timezone);
 
-header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
+header('Cache-Control: max-age=0, no-cache, no-store, must-revalidate'); // HTTP 1.1.
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
 ?> 
@@ -41,8 +41,8 @@ header('Expires: 0'); // Proxies.
  
     <body class="target" onLoad="loadBackgrounds()">  
 
-        <img src="https://source.unsplash.com/random?time=0146143132" class="fullbg active" alt="" id="background" />
-        <img src="https://source.unsplash.com/random?time=3535353543" class="fullbg hidden" alt="" id="background" />
+        <img src="https://source.unsplash.com/random?nature=9149174914" class="fullbg active" alt="" id="background" />
+        <img src="https://source.unsplash.com/random?people=he8q8e9q09" class="fullbg hidden" alt="" id="background" />
 
         <div id="maincontent">
 
@@ -119,13 +119,15 @@ header('Expires: 0'); // Proxies.
 
 			function reloadBackground() {  
 
+                var keywords = [];
+
                 $("img.fullbg").fadeToggle(3000);
                 setTimeout(function(){ 
          	        $("img.fullbg").toggleClass("active");
          	        $("img.fullbg").toggleClass("hidden");
-                    $("img.hidden").attr('src', "https://source.unsplash.com/random?time="+new Date().getTime());
+                    $("img.hidden").attr('src', "https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime());
                     $("img.hidden").fullBg();
-                    setTimeout(reloadBackground,30000);  
+                    setTimeout(reloadBackground,3000);  
                 }, 3000);
 			}
 
