@@ -27,19 +27,6 @@ header('Expires: 0'); // Proxies.
 		
 		<title><?php echo $title;?></title> 
 
-		<script type="text/javascript">
-			function reloadBackground() {  
-				var root = document.getElementsByTagName("body")[0];
-				var now = new Date();
-				var url = "https://unsplash.it/"+screen.width+"/"+screen.height+"?random&"+now.getTime();
-				var img = new Image();
-				img.onload = function() { root.style.background = "url("+url+") no-repeat center center fixed"; }
-				img.src = url;
-				if (img.complete) img.onload();
-				setTimeout(reloadBackground,15000);  
-			}
-		</script> 
-
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		
 		<link rel="stylesheet" href="css/main.css" type="text/css">
@@ -48,17 +35,31 @@ header('Expires: 0'); // Proxies.
 		<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
 		<script src="js/bubbles.js" type="text/javascript"></script>
+		<script src="js/jquery.fullbg.js" type="text/javascript"></script>
 		
-		<script type="text/javascript">
-		  window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var n=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(n?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o);for(var r=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=r(p[c])};
-		  heap.load("275512564");
-		</script>
 	</head> 
  
-    <body class="target" onLoad="reloadBackground()">  
-	
-		<div id="hello"><?php echo $text;?></div>
-		
+    <body class="target" onLoad="loadBackgrounds()">  
+
+        <img src="https://source.unsplash.com/random?time=0146143132" class="fullbg active" alt="" id="background" />
+        <img src="https://source.unsplash.com/random?time=3535353543" class="fullbg hidden" alt="" id="background" />
+
+        <div id="maincontent">
+
+    		<div id="hello"><?php echo $text;?></div>
+    		<div id="canvasBubbles" style="position:relative; height:100%; width:100%"></div>
+    		<div id="ferroMenu">
+    			<ul id="nav"> 
+    			    <?php 
+    			    foreach ($profiles as $profile) {
+                         echo '<li><a href="'.$profile[1].'" alt="'.$profile[0].'" target="_blank">'.$profile[2].'</a></li>';
+    			    }
+    			    ?>
+    			</ul>
+    		</div>
+        
+        </div>
+
 		<?php if (!empty($muzak)) { ?>
 		<div id="muzak">
 			<audio autoplay loop>
@@ -67,20 +68,10 @@ header('Expires: 0'); // Proxies.
 		</div>
 		<?php } ?>
 
-		<div id="canvasBubbles" style="position:relative; height:100%; width:100%"></div>
-		<div id="ferroMenu">
-			<ul id="nav"> 
-			    <?php 
-			    foreach ($profiles as $profile) {
-                     echo '<li><a href="'.$profile[1].'" alt="'.$profile[0].'" target="_blank">'.$profile[2].'</a></li>';
-			    }
-			    ?>
-			</ul>
-		</div>
-		
     	<script> 
-	    	$(document).ready(function() {
 
+	    	$(document).ready(function() {
+	    	
             	<?php if ($bubbles = 'YES') {?>
 			    	
 				    bubblesMain(new Object({
@@ -117,6 +108,26 @@ header('Expires: 0'); // Proxies.
 				});
 				
 			});
+
+			function loadBackgrounds() {  
+
+            	$("img.active").fullBg();
+            	$("img.hidden").fullBg();
+                setTimeout($("img.active").fadeToggle(3000),3000);
+                setTimeout(reloadBackground,9000);  
+			}
+
+			function reloadBackground() {  
+
+                $("img.fullbg").fadeToggle(3000);
+                setTimeout(function(){ 
+         	        $("img.fullbg").toggleClass("active");
+         	        $("img.fullbg").toggleClass("hidden");
+                    $("img.hidden").attr('src', "https://source.unsplash.com/random?time="+new Date().getTime());
+                    $("img.hidden").fullBg();
+                    setTimeout(reloadBackground,30000);  
+                }, 3000);
+			}
 
 		</script> 
 
