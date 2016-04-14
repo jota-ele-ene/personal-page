@@ -26,9 +26,17 @@ $profiles = array
   array("Medium page","https://medium.com/@jota_ele_ene",'<img src="icons/M.gif" style="height: 20px;margin: 10px 5px;">'),
   array("GitHub page","https://github.com/jota-ele-ene",'<i class="fa fa-github fa-2" style="font-size: x-large;margin-top: 0.4em;"></i>'),
   );
-  
+
+// Keywords for retrieving Unsplash pictures  
 $keywords = array ("fruits", "nature", "city", "night", "people", "sea", "beach","birds","desert");
 
 $muzak = 'hola';
+
+//Features to run if command
+$features = array
+  (
+  // Each profile consists of alt,href,html
+   'short' => 'shortener.php',
+  );
 
 ?>

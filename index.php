@@ -57,6 +57,15 @@ header('Expires: 0'); // Proxies.
     			    ?>
     			</ul>
     		</div>
+    		
+		<?php if (!empty($_GET['cmd'])) { 
+		    $cmd = $_GET['cmd'];
+            if (array_key_exists($cmd, $features)) {
+                if(file_exists('features/'.$features[$cmd]))
+                    include_once('features/'.$features[$cmd]);
+            }
+        } ?>
+
         
         </div>
 
