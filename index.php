@@ -41,8 +41,8 @@ header('Expires: 0'); // Proxies.
  
     <body class="target" onLoad="loadBackgrounds()">  
 
-        <img src="https://source.unsplash.com/random?nature=9149174914" class="fullbg active" alt="" id="background" />
-        <img src="https://source.unsplash.com/random?people=he8q8e9q09" class="fullbg hidden" alt="" id="background" />
+        <img src="" class="fullbg active" alt="" id="background" />
+        <img src="" class="fullbg hidden" alt="" id="background" />
 
         <div id="maincontent">
 
@@ -57,6 +57,12 @@ header('Expires: 0'); // Proxies.
     			    ?>
     			</ul>
     		</div>
+    		<div id="download">
+    		    <a class="download" href="" download="background" style="position: fixed; bottom: 0; right: 0; color: white; text-decoration: none; padding-bottom: 10px;">
+    		        <span>Download background</span>
+                    <i class="fa fa-download fa-2" style="font-size: larger;margin-top: 0.4em;"></i>
+                </a>
+            </div>
     		
 		<?php if (!empty($_GET['cmd'])) { 
 		    $cmd = $_GET['cmd'];
@@ -116,15 +122,43 @@ header('Expires: 0'); // Proxies.
 					    $("div#shortener").toggle(); 
 				});
 				
-			});
+		    });
+
+            function convertImgToDataURLviaCanvas(url, callback, outputFormat){
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function(){
+                    var canvas = document.createElement('CANVAS');
+                    var ctx = canvas.getContext('2d');
+                    var dataURL;
+                    canvas.height = this.height;
+                    canvas.width = this.width;
+                    ctx.drawImage(this, 0, 0);
+                    dataURL = canvas.toDataURL(outputFormat);
+                    callback(dataURL);
+                    canvas = null; 
+                };
+                img.src = url;
+            }
 
 			function loadBackgrounds() {  
 
-            	$("img.active").fullBg();
-            	$("img.hidden").fullBg();
-                setTimeout($("img.active").fadeToggle(3000),3000);
+                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
+                        $('img.active')
+                                .attr('src', base64Img)
+                                .end();
+                    	$("img.active").fullBg();
+	         	        $(".download").attr('href', $("img.active").attr("src"));
+	         	        $("img.active").fadeToggle(3000);
+                    });
+                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
+                        $('img.hidden')
+                                .attr('src', base64Img)
+                                .end();
+                    	$("img.hidden").fullBg();
+                    });
                 setTimeout(reloadBackground,9000);  
-			}
+			} 
 
 			function reloadBackground() {  
 
@@ -134,7 +168,17 @@ header('Expires: 0'); // Proxies.
                 setTimeout(function(){ 
          	        $("img.fullbg").toggleClass("active");
          	        $("img.fullbg").toggleClass("hidden");
-                    $("img.hidden").attr('src', "https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime());
+         	        $(".download").attr('href', $("img.active").attr("src"));    	
+    
+                    convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
+                        $('img.hidden')
+                                .attr('src', base64Img)
+                                .end();
+                    });
+                    
+                    //event.preventDefault();
+
+                    //$("img.hidden").attr('src', "https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime());
                     $("img.hidden").fullBg();
                     setTimeout(reloadBackground,3000);  
                 }, 3000);

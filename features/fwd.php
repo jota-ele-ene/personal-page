@@ -29,7 +29,7 @@ if (!empty($_GET['url'])) {
 	$result = mysql_query("SELECT url_link, url_hits FROM urls WHERE url_short = '".addslashes($_GET['url'])."'");
  
 	if (!$result) {
-		echo "Could not successfully run the shortener (" . mysql_error().")";
+		header("Result: Could not successfully run the shortener (" . mysql_error().")"); // Proxies.
 		exit; 
 	} 
 
@@ -37,6 +37,7 @@ if (!empty($_GET['url'])) {
         //	No shorten URL found. Redirecting to home
 		echo "No shorten URL found for url=".$_GET['url']." Redirecting to home (" . $home .")";
 		$command = "?cmd=".$_GET['url'];
+		header("Result: No shorten URL found for url=".$_GET['url']." Redirecting to home (" . $home .")"); // Proxies.
 		//header('HTTP/1.1 301 Moved Permanently');  
 		//header("Location: ".$home);  
 		//exit;
@@ -51,6 +52,7 @@ if (!empty($_GET['url'])) {
     	mysql_query("UPDATE urls SET url_hits=".$hits." WHERE url_short = '".addslashes($_GET['url'])."'");
     	header('HTTP/1.1 301 Moved Permanently');  
     	header("Location: ".$redirect);  
+    	exit;
 	}
 }
 else {
