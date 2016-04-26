@@ -22,11 +22,12 @@ header('Cache-Control: max-age=0, no-cache, no-store, must-revalidate'); // HTTP
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
 
-$home = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1);
+$command = str_replace('/', '', $_GET['url']);
+$home = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/'.$_GET['url']) + 1);
 
-if (!empty($_GET['url'])) { 
+if (!empty($command)) { 
     //	REtrieving target URL from url param containing shorten URL
-	$result = mysql_query("SELECT url_link, url_hits FROM urls WHERE url_short = '".addslashes($_GET['url'])."'");
+	$result = mysql_query("SELECT url_link, url_hits FROM urls WHERE url_short = '".addslashes($command)."'");
  
 	if (!$result) {
 		header("Result: Could not successfully run the shortener (" . mysql_error().")"); // Proxies.
@@ -35,9 +36,9 @@ if (!empty($_GET['url'])) {
 
 	if (mysql_num_rows($result) == 0) {
         //	No shorten URL found. Redirecting to home
-		echo "No shorten URL found for url=".$_GET['url']." Redirecting to home (" . $home .")";
-		$command = "?cmd=".$_GET['url'];
-		header("Result: No shorten URL found for url=".$_GET['url']." Redirecting to home (" . $home .")"); // Proxies.
+		echo "No shorten URL found for url=".$command." Redirecting to home (" . $home .")";
+		$command = "?cmd=".$command;
+		header("Result: No shorten URL found for url=".$command." Redirecting to home (" . $home .")"); // Proxies.
 		//header('HTTP/1.1 301 Moved Permanently');  
 		//header("Location: ".$home);  
 		//exit;

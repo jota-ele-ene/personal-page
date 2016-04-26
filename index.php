@@ -36,18 +36,32 @@ header('Expires: 0'); // Proxies.
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
 		<script src="js/bubbles.js" type="text/javascript"></script>
 		<script src="js/jquery.fullbg.js" type="text/javascript"></script>
+
+        <!-- Bootstrap styles -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!-- Generic page styles -->
+        <link rel="stylesheet" href="//blueimp.github.io/jQuery-File-Upload/css/style.css">
+        <!-- blueimp Gallery styles -->
+        <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+        <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+        <link rel="stylesheet" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload.css">
+        <link rel="stylesheet" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload-ui.css">
+        <!-- CSS adjustments for browsers with JavaScript disabled -->
+        <noscript><link rel="stylesheet" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload-noscript.css"></noscript>
+        <noscript><link rel="stylesheet" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload-ui-noscript.css"></noscript>
 		
 	</head> 
  
     <body class="target" onLoad="loadBackgrounds()">  
 
-        <img src="" class="fullbg active" alt="" id="background" />
-        <img src="" class="fullbg hidden" alt="" id="background" />
+		<div id="canvasBubbles" style="position: fixed;height:100%;width:100%;z-index: 100;top: 0;"></div>
 
-        <div id="maincontent">
+        <img src="" class="fullbg active" alt="" id="background" />
+        <img src="" class="fullbg inactive" alt="" id="background" />
+
+        <div id="maincontent" style="position:static;">
 
     		<div id="hello"><?php echo $text;?></div>
-    		<div id="canvasBubbles" style="position:relative; height:100%; width:100%"></div>
     		<div id="ferroMenu">
     			<ul id="nav"> 
     			    <?php 
@@ -57,12 +71,6 @@ header('Expires: 0'); // Proxies.
     			    ?>
     			</ul>
     		</div>
-    		<div id="download">
-    		    <a class="download" href="" download="background" style="position: fixed; bottom: 0; right: 0; color: white; text-decoration: none; padding-bottom: 10px;">
-    		        <span>Download background</span>
-                    <i class="fa fa-download fa-2" style="font-size: larger;margin-top: 0.4em;"></i>
-                </a>
-            </div>
     		
 		<?php if (!empty($_GET['cmd'])) { 
 		    $cmd = $_GET['cmd'];
@@ -73,6 +81,13 @@ header('Expires: 0'); // Proxies.
         } ?>
 
         
+        </div>
+
+		<div id="bgdownload">
+		    <a class="bgdownload" href="" download="background" style="z-index:200; position: fixed; bottom: 0; right: 0; color: white; text-decoration: none; padding-bottom: 10px;">
+		        <span>Download background</span>
+                <i class="fa fa-download fa-2" style="font-size: larger;margin-top: 0.4em;"></i>
+            </a>
         </div>
 
 		<?php if (!empty($muzak)) { ?>
@@ -143,21 +158,21 @@ header('Expires: 0'); // Proxies.
 
 			function loadBackgrounds() {  
 
-                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
+                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
                         $('img.active')
                                 .attr('src', base64Img)
                                 .end();
                     	$("img.active").fullBg();
-	         	        $(".download").attr('href', $("img.active").attr("src"));
-	         	        $("img.active").fadeToggle(3000);
+	         	        $(".bgdownload").attr('href', $("img.active").attr("src"));
+	         	        $("img.active").fadeToggle(1200);
                     });
-                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
-                        $('img.hidden')
+                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
+                        $('img.inactive')
                                 .attr('src', base64Img)
                                 .end();
-                    	$("img.hidden").fullBg();
+                    	$("img.inactive").fullBg();
                     });
-                setTimeout(reloadBackground,9000);  
+                //setTimeout(reloadBackground,3000);  
 			} 
 
 			function reloadBackground() {  
@@ -167,19 +182,18 @@ header('Expires: 0'); // Proxies.
                 $("img.fullbg").fadeToggle(3000);
                 setTimeout(function(){ 
          	        $("img.fullbg").toggleClass("active");
-         	        $("img.fullbg").toggleClass("hidden");
-         	        $(".download").attr('href', $("img.active").attr("src"));    	
+         	        $("img.fullbg").toggleClass("inactive");
+         	        $(".bgdownload").attr('href', $("img.active").attr("src"));    	
     
-                    convertImgToDataURLviaCanvas("https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime(), function(base64Img){
-                        $('img.hidden')
+                    convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
+                          $('img.inactive')
                                 .attr('src', base64Img)
                                 .end();
                     });
                     
                     //event.preventDefault();
 
-                    //$("img.hidden").attr('src', "https://source.unsplash.com/random?<?php echo $keywords[array_rand($keywords)];?>=" + new Date().getTime());
-                    $("img.hidden").fullBg();
+                    $("img.inactive").fullBg();
                     setTimeout(reloadBackground,3000);  
                 }, 3000);
 			}

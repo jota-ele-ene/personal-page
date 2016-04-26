@@ -37,6 +37,7 @@ $features = array
   (
   // Each profile consists of alt,href,html
    'short' => 'shortener.php',
+   'upload' => 'upload.php',
   );
 
 ?>

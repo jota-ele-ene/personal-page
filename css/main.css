@@ -1,5 +1,5 @@
 		body {    
-		        background: #45484d;
+		        background-color: #45484d!important;
 			background-size: cover;
 		  -moz-background-size: cover;
 		  -o-background-size: cover;
@@ -22,9 +22,10 @@ position: fixed;
         
         #maincontent {
           position: absolute;
-          top: 0;
+          top: 25%;
           left: 0;
-          z-index: 50;
+          z-index: 250;
+          text-align: center;
         }
         
         body{
@@ -74,12 +75,12 @@ position: fixed;
 		  box-shadow: 0 0 5px rgba(0, 0, 255, .5);
 		}
 
-		form {
+		#form1 {
 		  width:300px;
 		  margin: 20px auto;
 		}
 
-		input {
+		#form1 input {
 		  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		  border:1px solid #ccc;
 		  font-size:20px;
@@ -102,6 +103,11 @@ position: fixed;
 		  padding:10px;*/
 		}
 		
+		#ferromenu-controller div.bookmark-label
+		{
+		    line-height: inherit;
+		}
+		
 		table {
 			border-collapse:collapse; 
 			table-layout:fixed; 
@@ -109,9 +115,11 @@ position: fixed;
 		}
 		
 		table td { 
-			border:solid 1px #fab; 
+			border:solid 1px #EFF; 
 			width:100px; 
 			word-wrap:break-word;
+			background-color:#EEC;
+			font-size:smaller;
 		}
 		  
 		.compare-select-wrapper { min-width: 60%; float: right; } 

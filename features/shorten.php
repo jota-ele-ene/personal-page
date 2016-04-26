@@ -11,16 +11,18 @@ else {
 		exit;
 	}
 }
-//include tracking code. Use the file ga.php to include the code to embed for tracking purpose
-if(file_exists('../setup/ga.php'))
-    include_once("../setup/ga.php");
 //include database connection details
 include('../setup/db.php');
 
 
 //insert new url
 
-$url = $_POST['url'];
+//if (empty($url)) {
+if (strpos($_SERVER['REQUEST_URI'], 'shorten.php') !== false) {
+    $url = $_POST['url'];
+    $server = $_SERVER['REMOTE_ADDR'];
+}
+else $server = "LOCALHOST";
 
 //echo $url;
 
@@ -32,13 +34,16 @@ $ret = mysql_query("INSERT INTO urls (url_link, url_short, url_ip, url_date) VAL
 	(
 	'".addslashes($url)."',
 	'".$short."',
-	'".$_SERVER['REMOTE_ADDR']."',
+	'".$server."',
 	'".time()."'
 	)
 
 ");
+
+if ($ret == false) $ret = mysql_error().'('.$hostname.','.$username.','.$password.')';
 		 
-echo json_encode(array('ret' => $ret, 'url' => addslashes($url),'short' => $short));
+if (strpos($_SERVER['REQUEST_URI'], 'shorten.php') !== false) 
+     echo json_encode(array('ret' => $ret, 'url' => addslashes($url),'short' => $short));
 
 
 
