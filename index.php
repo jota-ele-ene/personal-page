@@ -6,7 +6,9 @@ else {
 	if(file_exists('setup/var.php'))
     	include_once("setup/var.php");
 	else {
-		echo "The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment";
+		header("Result: The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment");
+   	header('HTTP/1.1 301 Moved Permanently');  
+   	header("Location: upss.php");  
 		exit;
 	}
 }
@@ -30,7 +32,7 @@ header('Expires: 0'); // Proxies.
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		
 		<link rel="stylesheet" href="css/main.css" type="text/css">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/jquery.ferro.ferroMenu.css" type="text/css">
 		<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
@@ -84,7 +86,7 @@ header('Expires: 0'); // Proxies.
         </div>
 
 		<div id="bgdownload">
-		    <a class="bgdownload" href="" download="background" style="z-index:200; position: fixed; bottom: 0; right: 0; color: white; text-decoration: none; padding-bottom: 10px;">
+		    <a class="bgdownload" href="" download="background" style="display:none;z-index:200; position: fixed; bottom: 0; right: 0; color: white; text-decoration: none; padding-bottom: 10px;">
 		        <span>Download background</span>
                 <i class="fa fa-download fa-2" style="font-size: larger;margin-top: 0.4em;"></i>
             </a>
@@ -163,7 +165,7 @@ header('Expires: 0'); // Proxies.
                                 .attr('src', base64Img)
                                 .end();
                     	$("img.active").fullBg();
-	         	        $(".bgdownload").attr('href', $("img.active").attr("src"));
+	         	        $(".bgdownload").attr('href', $("img.active").attr("src")).fadeToggle(1200);
 	         	        $("img.active").fadeToggle(1200);
                     });
                 convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
@@ -172,7 +174,7 @@ header('Expires: 0'); // Proxies.
                                 .end();
                     	$("img.inactive").fullBg();
                     });
-                //setTimeout(reloadBackground,3000);  
+                setTimeout(reloadBackground,3000);  
 			} 
 
 			function reloadBackground() {  
