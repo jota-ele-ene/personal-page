@@ -2,12 +2,12 @@
 
 //mysql db connection information
 $hostname = "127.0.0.1"; //your db host 
-$database = "myshortenerdb"; //your database name
-$username = "myshortener"; //username for your database
-$password = "010short010"; //password for your database
+$database = "shortener"; //your database name
+$username = "shortener"; //username for your database
+$password = "00short00"; //password for your database
 
 //My site page contents
-$title = "Here I am @ joseluisnuñez.es";
+$title = "Are you looking for me?";
 $text = "Hello world!";
 
 $bubbles = 'YES';
