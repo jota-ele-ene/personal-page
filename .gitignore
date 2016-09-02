@@ -1,5 +1,7 @@
 .well-known/
 images/
+setup/mycustom.php
+setup/default.php
 pub
 xmas.mp3
 jQuery-File-Upload-master/

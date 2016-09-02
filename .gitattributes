@@ -1,1 +1,2 @@
 setup/config-file filter=modify-config
+setup/custom.php filter=custom-config
