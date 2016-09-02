@@ -4,7 +4,7 @@
 $hostname = "127.0.0.1"; //your db host 
 $database = "shortener"; //your database name
 $username = "shortener"; //username for your database
-$password = ""; //password for your database
+$password = "bla"; //password for your database
 
 //My site page contents
 $title = "Are you looking for me?";
