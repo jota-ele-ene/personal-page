@@ -1,8 +1,8 @@
 <?php
 
-//*******************************************************
-//  Variables needed for customizing the home page styles
-//*******************************************************
+//******************************************************
+//  Variables needed for customizing the home page style
+//******************************************************
 
 //My site page contents
 $title = "Are you looking for me?";
