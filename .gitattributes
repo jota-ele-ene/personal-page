@@ -1,1 +1,1 @@
-config-file filter=modify-config
+setup/config-file filter=modify-config
