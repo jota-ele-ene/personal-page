@@ -1,5 +1,14 @@
-<div id="shortener" style="position: fixed; z-index: 100; height: 10px;top: 200px;left: 50%;margin-left: -150px;">
-	<div id="shortenerResult" style="text-align:center;font-size: 20px;"></div>
+<?php 
+if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
+	header('HTTP/1.1 301 Moved Permanently');  
+	header("Location: /?cmd=short");  
+ 	header("Result:  Shortener invoked");  
+	exit;
+}
+echo "SERVICE:".$service;
+if (!empty($site)) {
+?><div id="shortener" style="position: fixed; z-index: 100;top: 200px;left: 50%;margin-left: -190px;    background-color:rgba(220, 220, 220, 0.5);padding:5px 20px;font-size:15px;border-radius: 10px;">
+	<div id="shortenerResult" style="text-align:center;font-size: 18px;    margin-top: 10px;"></div>
 	<form id="form1" name="form1" method="post">
 <!--		<input name="url" type="url" id="url" placeholder123="Tell me the URL to short" size="75" required />-->
 		<input name="url" type="url" id="url" placeholder="Tell me the URL to shorten" size="75" required style="margin: 20px 0;"/>
@@ -11,7 +20,7 @@
 
 function getShortenUrl(searchTerm) {
 
-        $.post("<?php echo "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1).'features/shorten.php';?>",
+        $.post("<?php echo $service;?>",
         {
           url: searchTerm,
         },
@@ -42,3 +51,6 @@ $(document).ready(function() {
   });
   
 </script>
+<?php
+}
+?>

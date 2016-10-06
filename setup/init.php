@@ -1,10 +1,42 @@
-<html><head>
+<?php
+
+// Run the common initialization tasks
+//include configuration file 
+if(file_exists($_SERVER['DOCUMENT_ROOT'].'/setup/custom.php'))
+{
+  include_once($_SERVER['DOCUMENT_ROOT']."/setup/custom.php");
+}
+else 
+{
+		error_found ( E_USER_ERROR, "The custom.php file does not exist. Please copy the default.php file and mofify it to your environment", "init.php", 8);
+}
+
+function error_found($level,$mymsg, $errfile, $errline){
+  //header("Location: upss1.php");
+	global $allowedErrors,$allowingErrors;
+	if ($allowingErrors && in_array($mymsg,$allowedErrors)) return true;
+  include_once($_SERVER['DOCUMENT_ROOT'].'/upss.php');
+	exit;
+}
+
+set_error_handler('error_found');
+
+//include database connection details
+include($_SERVER['DOCUMENT_ROOT'].'/setup/db.php');
+
+date_default_timezone_set($timezone);
+
+$home = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/features') + 1);
+$service = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1).'features/fshorten.php';
+
+if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
+?><html><head>
 		<title> Nothing here </title>
 
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Upsss! Something unexpected happened">
-		<!--<meta http-equiv="refresh" content="12;url=http://<?php echo $_SERVER['HTTP_HOST'];?>" />-->
+		<meta name="description" content="Everything is working right here">
+		<meta http-equiv="refresh" content="12;url=http://<?php echo $_SERVER['HTTP_HOST'];?>" />
 
 
   	<link href="http://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet" type="text/css">
@@ -76,16 +108,6 @@
         font-size: 45px;
       }
 			
-			a#detail {
-        font-family: 'Josefin Slab', 'Times';
-		    margin: 40px 0;
-				position: absolute;
-				width: 100%;
-				text-align: center;
-				text-decoration: none;
-				color: grey;
-			}
-
       .text {
         font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
           font-weight: 300;
@@ -142,59 +164,7 @@
         }
 
       }  
-			
-			/* Tooltip */
-			#detail + .tooltip {
-					background: grey;
-    			border-radius: 8px;
-					margin-top:5px;
-			}
-			#detail + .tooltip > .tooltip-arrow {
-					border-top-color: grey!important;
-			    margin-bottom: -5px;
-			}			
-			#detail + .tooltip > .tooltip-head > .glyphicon {
-					color: white;
-					font-size: xx-large;
-					float: left;
-					margin: 5px;
-			}
-			#detail + .tooltip > .tooltip-head > #errfile {
-			    float: left;
-    			width: 60%;
-					font-style:italic;
-					font-size:smaller;
-					margin:15px 5px;
-					color:white;
-			}
-			#detail + .tooltip > .tooltip-inner {
-					/*background-color: #73AD21;*/
-					background-color: grey;
-					color: #FFFFFF;
-					/*border: 1px solid green;*/
-					padding: 0 10px 5px;
-					font-size: 10px;
-					text-align:left;
-					font-family:monospace;
-					clear: both;
-			}
-			/* Tooltip on top */		
-/*			#detail + .tooltip.top > .tooltip-arrow {
-					border-top: 5px solid green;
-			}
-			/* Tooltip on bottom */
-/*			#detail + .tooltip.bottom > .tooltip-arrow {
-					border-bottom: 5px solid blue;
-			}
-			/* Tooltip on left */
-/*			#detail + .tooltip.left > .tooltip-arrow {
-					border-left: 5px solid red;
-			}
-			/* Tooltip on right */
-/*			#detail + .tooltip.right > .tooltip-arrow {
-					border-right: 5px solid black;
-			}
-					
+								
     </style>
 
 	
@@ -211,25 +181,19 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 
-			$(document).ready(function(){
-					$('[data-toggle="tooltip"]').tooltip({
-							delay: {show: 0, hide: 5},
-			        template : '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-head"><div class="glyphicon glyphicon-info-sign"></div><div id="errfile"><?php echo $errfile.'('.$errline.')'; ?></div></div><div class="tooltip-inner"></div></div>'
-					});
-			});
-
 		</script>
 
 	<body>
 
 		<hgroup>
-			<h1> Upssss! </h1>
-			<h3> something </h3>
-			<h4> happened </h4>
-			<a id="detail" href="#" <?php if (!empty($mymsg)) {?>data-toggle="tooltip" title="<?php echo $mymsg;?>"<?php }?>>You really want to know what?</a>
+			<h1> Congrats! </h1>
+			<h3> Everything </h3>
+			<h4> working right </h4>
 		</hgroup>
 
   </body>
   
 </html>
-<?php die();?>
+<?php	exit; 
+}
+?>

@@ -80,17 +80,25 @@ position: fixed;
 		  margin: 20px auto;
 		}
 
+		#form1 input#url {
+    font-size: 15px;
+    padding: 0 10px;
+    background: #EEE;
+			color: #888;
+		}
+		
 		#form1 input {
 		  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		  border:1px solid #ccc;
-		  font-size:20px;
+		  font-size:18px;
 		  width:300px;
 		  min-height:30px;
 		  display:block;
 		  margin-bottom:15px;
 		  margin-top:5px;
 		  outline: none;
-
+			background: #444;
+			color:#fff;
 		  -webkit-border-radius:5px;
 		  -moz-border-radius:5px;
 		  -o-border-radius:5px;
@@ -111,16 +119,16 @@ position: fixed;
 		table {
 			border-collapse:collapse; 
 			table-layout:fixed; 
-			width:410px;
+			width:500px;
 		}
 		
 		table td { 
 			border:solid 1px #EFF; 
-			width:100px; 
+			/*width:100px;*/ 
 			word-wrap:break-word;
-			background-color:#EEC;
+			/*background-color:#EEC;*/
 			font-size:smaller;
 		}
-		  
+
 		.compare-select-wrapper { min-width: 60%; float: right; } 
   

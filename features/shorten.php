@@ -1,18 +1,7 @@
 <?php 
 
 //include configuration file 
-if(file_exists('../setup/custom.php'))
-    include_once("../setup/custom.php");
-else {
-	if(file_exists('../setup/var.php'))
-    	include_once("../setup/var.php");
-	else {
-		echo "The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment";
-		exit;
-	}
-}
-//include database connection details
-include('../setup/db.php');
+require_once('../setup/init.php');
 
 
 //insert new url

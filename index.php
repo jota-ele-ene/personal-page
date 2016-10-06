@@ -1,28 +1,11 @@
 <?php
-//include configuration file 
-if(file_exists('setup/custom.php'))
-    include_once("setup/custom.php");
-else {
-	if(file_exists('setup/var.php'))
-    	include_once("setup/var.php");
-	else {
-		header("Result: The var.php file does not exist. Please copy the var.origin.php file and mofify it to your environment");
-   	header('HTTP/1.1 301 Moved Permanently');  
-   	header("Location: upss.php");  
-		exit;
-	}
-}
-//include tracking code. Use the file ga.php to include the code to embed for tracking purpose
-if(file_exists('setup/ga.php'))
-    include_once("setup/ga.php");
-//include database connection details
-include('setup/db.php');
 
-date_default_timezone_set($timezone);
+require_once('setup/init.php');
 
 header('Cache-Control: max-age=0, no-cache, no-store, must-revalidate'); // HTTP 1.1.
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
+
 ?> 
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -38,6 +21,9 @@ header('Expires: 0'); // Proxies.
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
 		<script src="js/bubbles.js" type="text/javascript"></script>
 		<script src="js/jquery.fullbg.js" type="text/javascript"></script>
+	
+		<link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" type="text/css">
+		<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
         <!-- Bootstrap styles -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -67,7 +53,7 @@ header('Expires: 0'); // Proxies.
     		<div id="ferroMenu">
     			<ul id="nav"> 
     			    <?php 
-    			    foreach ($profiles as $profile) {
+    			    foreach ($profiles as $profile) { 
                          echo '<li><a href="'.$profile[1].'" alt="'.$profile[0].'" target="_blank">'.$profile[2].'</a></li>';
     			    }
     			    ?>
@@ -161,47 +147,49 @@ header('Expires: 0'); // Proxies.
 			function loadBackgrounds() {  
 
                 convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
-                        $('img.active')
-                                .attr('src', base64Img)
-                                .end();
-                    	$("img.active").fullBg();
-	         	        $(".bgdownload").attr('href', $("img.active").attr("src")).fadeToggle(1200);
-	         	        $("img.active").fadeToggle(1200);
-                    });
-                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
-                        $('img.inactive')
-                                .attr('src', base64Img)
-                                .end();
-                    	$("img.inactive").fullBg();
-                    });
-                setTimeout(reloadBackground,3000);  
+									$('img.active').attr('src', base64Img).end();
+									$("img.active").fullBg();
+									$(".bgdownload").attr('href', $("img.active").attr("src")).fadeIn(5000);
+									$("img.active").fadeIn(5000);
+									convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
+										$('img.inactive').attr('src', base64Img).end();
+										$("img.inactive").fullBg();
+										setTimeout(reloadBackground,5000);  
+									});
+								});
+				
+				
 			} 
 
 			function reloadBackground() {  
 
                 var keywords = [];
-
+								
                 $("img.fullbg").fadeToggle(3000);
+				
                 setTimeout(function(){ 
+									
          	        $("img.fullbg").toggleClass("active");
          	        $("img.fullbg").toggleClass("inactive");
          	        $(".bgdownload").attr('href', $("img.active").attr("src"));    	
     
-                    convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
-                          $('img.inactive')
-                                .attr('src', base64Img)
-                                .end();
-                    });
-                    
-                    //event.preventDefault();
-
-                    $("img.inactive").fullBg();
-                    setTimeout(reloadBackground,3000);  
-                }, 3000);
+                  convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
+                    $('img.inactive').attr('src', base64Img).end();
+                  	$("img.inactive").fullBg();
+                  });
+                  
+                  setTimeout(reloadBackground,3000);  
+                
+								}, 3000);
 			}
 
 		</script> 
 
+		<?php 
+//include tracking code. Use the file ga.php to include the code to embed for tracking purpose
+include_once("setup/ga.php");
+		?>
+			
 	</body>
 
 </html>
