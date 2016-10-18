@@ -1,6 +1,11 @@
 <?php
 
-$site = mysql_connect($hostname, $username, $password); 
+global $site;
+global $hostname;
+global $database;
+global $username;
+global $password;
+$site = mysql_connect( $hostname, $username, $password); 
 
 if ($site)
 {

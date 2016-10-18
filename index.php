@@ -63,9 +63,8 @@ header('Expires: 0'); // Proxies.
 		<?php if (!empty($_GET['cmd'])) { 
 		    $cmd = $_GET['cmd'];
             if (array_key_exists($cmd, $features)) {
-                if(file_exists('features/'.$features[$cmd]))
-                    include_once('features/'.$features[$cmd]);
-            }
+								locate_and_include($features[$cmd]);
+             }
         } ?>
 
         
@@ -187,7 +186,7 @@ header('Expires: 0'); // Proxies.
 
 		<?php 
 //include tracking code. Use the file ga.php to include the code to embed for tracking purpose
-include_once("setup/ga.php");
+locate_and_include("ga.php");
 		?>
 			
 	</body>

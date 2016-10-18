@@ -1,34 +1,51 @@
 <?php
 
-// Run the common initialization tasks
-//include configuration file 
-if(file_exists($_SERVER['DOCUMENT_ROOT'].'/setup/custom.php'))
-{
-  include_once($_SERVER['DOCUMENT_ROOT']."/setup/custom.php");
-}
-else 
-{
-		error_found ( E_USER_ERROR, "The custom.php file does not exist. Please copy the default.php file and mofify it to your environment", "init.php", 8);
+function locate($pattern) {
+	$iti = new RecursiveDirectoryIterator($_SERVER['DOCUMENT_ROOT']);
+    foreach(new RecursiveIteratorIterator($iti) as $file){
+         if(strpos($file , $pattern) !== false){
+					 return $file;
+         }
+    }
+    return false;
 }
 
+function locate_and_include($pattern) {
+	$filepath = locate($pattern);
+	if ($filepath==false) return false;
+	include_once($filepath); return true;
+}
+
+// Run the common initialization tasks
+//include configuration file 
+$custom_path = locate('custom.php');
+if( $custom_path==false )
+{
+		error_found ( E_USER_ERROR, "The custom.php file does not exist. Please copy the default.php file and mofify it to your environment", "init.php", 8);
+} 
+include_once($custom_path);
+
+
 function error_found($level,$mymsg, $errfile, $errline){
-  //header("Location: upss1.php");
+ // header("Location: upss1.php");
+  header("Message: ".$mymsg.' - '.$errfile.'('.$errline.')');
 	global $allowedErrors,$allowingErrors;
 	if ($allowingErrors && in_array($mymsg,$allowedErrors)) return true;
-  include_once($_SERVER['DOCUMENT_ROOT'].'/upss.php');
+  include_once(locate('upss.php'));
 	exit;
 }
 
 set_error_handler('error_found');
 
 //include database connection details
-include($_SERVER['DOCUMENT_ROOT'].'/setup/db.php');
+locate_and_include('db.php');
 
 date_default_timezone_set($timezone);
 
-$home = $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/features') + 1);
-$service = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1).'features/fshorten.php';
+$home = parse_url($_SERVER['REQUEST_URI'],PHP_URL_SCHEME) . '://' . parse_url($_SERVER['REQUEST_URI'],PHP_URL_HOST). '/';
+$service = $home.substr(locate('shorten.php'),strlen($_SERVER['DOCUMENT_ROOT']));
 
+// invoking this file in the URL
 if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
 ?><html><head>
 		<title> Nothing here </title>
@@ -169,19 +186,8 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
 
 	
 		<!-- MISC -->
-		<script type="text/javascript">
+<?php  locate_and_include('ga.php');?>
 
-			var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-35944549-1']);
-		  _gaq.push(['_trackPageview']);
-
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-
-		</script>
 
 	<body>
 
