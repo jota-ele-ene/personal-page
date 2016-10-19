@@ -42,8 +42,13 @@ locate_and_include('db.php');
 
 date_default_timezone_set($timezone);
 
-$home = parse_url($_SERVER['REQUEST_URI'],PHP_URL_SCHEME) . '://' . parse_url($_SERVER['REQUEST_URI'],PHP_URL_HOST). '/';
-$service = $home.substr(locate('shorten.php'),strlen($_SERVER['DOCUMENT_ROOT']));
+$home = sprintf(
+    "%s://%s",
+    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+    $_SERVER['SERVER_NAME']
+  );
+// Get the shortener service
+$service = $home.substr(locate(($site)?'/shorten.php':"fshorten.php"),strlen($_SERVER['DOCUMENT_ROOT']));
 
 // invoking this file in the URL
 if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {

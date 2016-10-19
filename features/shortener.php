@@ -5,6 +5,8 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
  	header("Result:  Shortener invoked");  
 	exit;
 }
+global $site;
+global $service;
 echo "SERVICE:".$service;
 if (!empty($site)) {
 ?><div id="shortener" style="position: fixed; z-index: 100;top: 200px;left: 50%;margin-left: -190px;    background-color:rgba(220, 220, 220, 0.5);padding:5px 20px;font-size:15px;border-radius: 10px;">

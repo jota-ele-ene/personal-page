@@ -11,13 +11,13 @@ $command = str_replace('/', '', $_GET['url']);
 
 if (strcmp(__FILE__, $command) == 0) {
 	header('HTTP/1.1 301 Moved Permanently');  
-	header("Location: http://".$home);  
+	header("Location: ".$home);  
  	header("Result:  No command to forward");  
 	exit;
 }
 else if (array_key_exists($command, $features)) {
 	header('HTTP/1.1 301 Moved Permanently');  
-	header("Location: http://".$home."?cmd=".$command);  
+	header("Location: ".$home."?cmd=".$command);  
  	header("Command: ".$command);  
 	exit;
 	

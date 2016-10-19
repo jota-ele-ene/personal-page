@@ -63,6 +63,8 @@ header('Expires: 0'); // Proxies.
 		<?php if (!empty($_GET['cmd'])) { 
 		    $cmd = $_GET['cmd'];
             if (array_key_exists($cmd, $features)) {
+							echo $features[$cmd];
+							echo locate($features[$cmd]);
 								locate_and_include($features[$cmd]);
              }
         } ?>
