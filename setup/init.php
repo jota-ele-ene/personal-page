@@ -38,7 +38,8 @@ function error_found($level,$mymsg, $errfile, $errline){
 set_error_handler('error_found');
 
 //include database connection details
-locate_and_include('db.php');
+//comment this line to use the FS
+//locate_and_include('db.php');
 
 date_default_timezone_set($timezone);
 
@@ -48,7 +49,8 @@ $home = sprintf(
     $_SERVER['SERVER_NAME']
   );
 // Get the shortener service
-$service = $home.substr(locate(($site)?'/shorten.php':"fshorten.php"),strlen($_SERVER['DOCUMENT_ROOT']));
+//$service = $home.substr(locate(isset($site)?'/shorten.php':"fshorten.php"),strlen($_SERVER['DOCUMENT_ROOT']));
+$service = $home.substr(locate('/shorten.php'),strlen($_SERVER['DOCUMENT_ROOT']));
 
 // invoking this file in the URL
 if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {

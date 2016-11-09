@@ -11,8 +11,8 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
 				<table id="stats"  class="display compact" cellspacing="0" width="100%">
 			<thead>
 			<tr>
-				<th style="text-align:center;width;460px;padding:0">URL Shorten</th>
-				<th style="text-align:center;width:30px;padding:0">#</th>
+				<th style="text-align:center;width;440px;padding:0">URL Shorten</th>
+				<th style="text-align:center;width:50px;padding:0">#</th>
 				<th style="text-align:center;width:100px;padding:0">IP</th>
 				<th style="text-align:center;width:130px;padding:0">Shorten date</th>
 			</tr>

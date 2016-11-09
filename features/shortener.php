@@ -5,10 +5,9 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
  	header("Result:  Shortener invoked");  
 	exit;
 }
-global $site;
 global $service;
-echo "SERVICE:".$service;
-if (!empty($site)) {
+echo $service;
+if (!empty($service)) {
 ?><div id="shortener" style="position: fixed; z-index: 100;top: 200px;left: 50%;margin-left: -190px;    background-color:rgba(220, 220, 220, 0.5);padding:5px 20px;font-size:15px;border-radius: 10px;">
 	<div id="shortenerResult" style="text-align:center;font-size: 18px;    margin-top: 10px;"></div>
 	<form id="form1" name="form1" method="post">
@@ -30,7 +29,7 @@ function getShortenUrl(searchTerm) {
 			obj = JSON.parse(data);
             if (status == "success") {
 //.
-				document.getElementById('shortenerResult').innerHTML = 'Your shorten URL <a href="<?php echo "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/'))."/";?>'+ obj.short + '" target="_blank">http://jln.bz/' + obj.short + '</a>';
+				document.getElementById('shortenerResult').innerHTML = 'Your shorten URL <a href="'+ obj.short + '" target="_blank">' + obj.short + '</a>';
 			}
 			else 
 				document.getElementById('shortenerResult').innerHTML = 'Unable to retrieve shorten url (' + data.status + ')';
