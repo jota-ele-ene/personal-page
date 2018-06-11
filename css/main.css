@@ -54,7 +54,7 @@ position: fixed;
 			text-align: center;
 			line-height: 1;
 			padding: 0;
-			margin: 15% auto;
+			margin: 15% auto 0;
 			color: white;			
 			font-family: monospace;
 			max-width: 400px;
