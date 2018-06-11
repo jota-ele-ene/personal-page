@@ -6,9 +6,9 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
 	exit;
 }
 global $service;
-echo $service;
+//echo $service;
 if (!empty($service)) {
-?><div id="shortener" style="position: fixed; z-index: 100;top: 200px;left: 50%;margin-left: -190px;    background-color:rgba(220, 220, 220, 0.5);padding:5px 20px;font-size:15px;border-radius: 10px;">
+?><div id="shortener" style="z-index: 1000;background-color:rgba(220, 220, 220, 0.5);padding:5px 20px;font-size:15px;border-radius: 10px;margin: 30% auto;width: 350px;">
 	<div id="shortenerResult" style="text-align:center;font-size: 18px;    margin-top: 10px;"></div>
 	<form id="form1" name="form1" method="post">
 <!--		<input name="url" type="url" id="url" placeholder123="Tell me the URL to short" size="75" required />-->

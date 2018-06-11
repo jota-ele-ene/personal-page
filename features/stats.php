@@ -21,7 +21,6 @@ if (strpos($_SERVER['REQUEST_URI'],substr(strrchr(__FILE__, "/"), 1))) {
 
 <?php 
 global $site;
-		echo $site;
 if (!empty($site)) {
 		//	REtrieving target URL from url param containing shorten URL
 	$result = mysql_query("SELECT url_link, url_hits, url_ip,  url_date FROM urls");

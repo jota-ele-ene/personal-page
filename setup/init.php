@@ -35,11 +35,11 @@ function error_found($level,$mymsg, $errfile, $errline){
 	exit;
 }
 
-set_error_handler('error_found');
+//set_error_handler('error_found');
 
 //include database connection details
 //comment this line to use the FS
-//locate_and_include('db.php');
+locate_and_include('db.php');
 
 date_default_timezone_set($timezone);
 

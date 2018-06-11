@@ -18,6 +18,7 @@ position: fixed;
   left: 0;
   overflow: hidden;
   display:none;
+	z-index:-10;
         }
         
         #maincontent {
@@ -46,14 +47,23 @@ position: fixed;
 		}
 
 		#hello{
-		   color: white;
-			font-family: monospace;
-			position: fixed;
+			font-size: 12vw;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			text-align: center;
-			font-size: 8em;
+			line-height: 1;
+			padding: 0;
+			margin: 15% auto;
+			color: white;			
+			font-family: monospace;
+			max-width: 400px;
+
+/*			position: fixed;
+			text-align: center;
 			WIDTH: 100%;
 			HEIGHT: 20%;
-			TOP: 40%;
+			TOP: 40%;*/
 		}
 	 	
 /*

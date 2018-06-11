@@ -1,4 +1,10 @@
 RewriteEngine on  
 RewriteCond %{REQUEST_FILENAME} !-f  
 RewriteCond %{REQUEST_FILENAME} !-d  
-RewriteRule ^(.*) features/fwd.php?url=$1 [L,QSA] 
+RewriteRule ^(.*) /features/fwd.php?url=$1 [L,QSA] 
+
+#ErrorDocument 400 /upss.php
+#ErrorDocument 401 /upss.php
+#ErrorDocument 403 /upss.php
+ErrorDocument 404 google.com
+#ErrorDocument 500 /upss.php

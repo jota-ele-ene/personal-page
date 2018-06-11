@@ -1,5 +1,5 @@
 <?php
-
+echo 'fwd';
 //include configuration file 
 require_once('../setup/init.php');
 
@@ -7,7 +7,10 @@ header('Cache-Control: max-age=0, no-cache, no-store, must-revalidate'); // HTTP
 header('Pragma: no-cache'); // HTTP 1.0.
 header('Expires: 0'); // Proxies.
 
-$command = str_replace('/', '', $_GET['url']);
+if (isset($_GET['url']))
+	$command = str_replace('/', '', $_GET['url']);
+else 
+	$command = str_replace('/', '', $_SERVER['REQUEST_URI']);
 
 if (strcmp(__FILE__, $command) == 0) {
 	header('HTTP/1.1 301 Moved Permanently');  
@@ -69,7 +72,7 @@ if (!empty($command)) {
 						$hits = $row["url_hits"]+1; 
 					}
 					echo $hits.','.$redirect;
-					mysql_query("UPDATE urls SET url_hits=".$hits." WHERE url_short = '".addslashes($_GET['url'])."'");
+					mysql_query("UPDATE urls SET url_hits=".$hits." WHERE url_short = '".$command."'");
 					header('HTTP/1.1 301 Moved Permanently');  
 					header("Location: ".$redirect);  
 					header("Result: Redirect to ".$redirect);  

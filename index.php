@@ -9,7 +9,9 @@ header('Expires: 0'); // Proxies.
 ?> 
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		
+		<meta name="wot-verification" content="55c85b9dc8325a957b4e"/>
+
+	
 		<title><?php echo $title;?></title> 
 
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -21,6 +23,9 @@ header('Expires: 0'); // Proxies.
 		<script src="js/jquery.ferro.ferroMenu-1.1.min.js" type="text/javascript"></script>
 		<script src="js/bubbles.js" type="text/javascript"></script>
 		<script src="js/jquery.fullbg.js" type="text/javascript"></script>
+	
+		<script type="text/javascript" src="js/ThreeCanvas.js"></script>
+		<script type="text/javascript" src="js/Snow.js"></script>
 	
 		<link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" type="text/css">
 		<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" type="text/javascript"></script>
@@ -40,9 +45,10 @@ header('Expires: 0'); // Proxies.
 		
 	</head> 
  
-    <body class="target" onLoad="loadBackgrounds()">  
+    <body class="target" onLoad="loadBackgrounds();">  
+<!--    <body class="target" onLoad="loadBackgrounds();initSnowCanvas();">  -->
 
-		<div id="canvasBubbles" style="position: fixed;height:100%;width:100%;z-index: 100;top: 0;"></div>
+		<div id="canvasBubbles" style="position: fixed;height:100%;width:100%;z-index: -1;top: 0;"></div>
 
         <img src="" class="fullbg active" alt="" id="background" />
         <img src="" class="fullbg inactive" alt="" id="background" />
@@ -63,7 +69,7 @@ header('Expires: 0'); // Proxies.
 		<?php if (!empty($_GET['cmd'])) { 
 		    $cmd = $_GET['cmd'];
             if (array_key_exists($cmd, $features)) {
-							echo $features[$cmd];
+							//echo $features[$cmd];
 								locate_and_include($features[$cmd]);
              }
         } ?>
@@ -121,9 +127,9 @@ header('Expires: 0'); // Proxies.
 						$.fn.ferroMenu.toggleMenu("#nav"); 
 				});
 			    
-			    $("div#canvasBubbles").click( function() {
+			    /*$("div#canvasBubbles").click( function() {
 					    $("div#shortener").toggle(); 
-				});
+				});*/
 				
 		    });
 
@@ -146,11 +152,13 @@ header('Expires: 0'); // Proxies.
 
 			function loadBackgrounds() {  
 
+//                convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
                 convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
 									$('img.active').attr('src', base64Img).end();
 									$("img.active").fullBg();
 									$(".bgdownload").attr('href', $("img.active").attr("src")).fadeIn(5000);
 									$("img.active").fadeIn(5000);
+//									convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
 									convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
 										$('img.inactive').attr('src', base64Img).end();
 										$("img.inactive").fullBg();
@@ -173,6 +181,7 @@ header('Expires: 0'); // Proxies.
          	        $("img.fullbg").toggleClass("inactive");
          	        $(".bgdownload").attr('href', $("img.active").attr("src"));    	
     
+//                  convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
                   convertImgToDataURLviaCanvas("https://source.unsplash.com/random?=" + new Date().getTime(), function(base64Img){
                     $('img.inactive').attr('src', base64Img).end();
                   	$("img.inactive").fullBg();
@@ -181,6 +190,14 @@ header('Expires: 0'); // Proxies.
                   setTimeout(reloadBackground,3000);  
                 
 								}, 3000);
+			}
+
+			function initSnowCanvas() {  
+				var str = window.location.href;
+				var n = str.indexOf("cmd=");
+				if (n < 0) {
+						initSnow();
+				}
 			}
 
 		</script> 
